@@ -1,9 +1,9 @@
 import { configApi } from "./constants"
 
  class Api {
-  constructor(config) {
-    this._url = config.url;
-    this._headers = config.headers;
+  constructor() {
+    this._url = configApi.url;
+    //this._headers = configApi;
   }
 
   _onError = (res) => {
@@ -13,63 +13,97 @@ import { configApi } from "./constants"
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  getUserInfo = () => {
+  getUserInfo = (token) => {
+    //console.log(configApi.authorization);
     return fetch(`${this._url}users/me`, {
       method: "GET",
-      headers: this._headers,
+      credentials: 'include',
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      } //configApi.headers
+      //headers: this._headers,
+      //body: JSON.stringify(user),
     }).then(this._onError);
   };
 
-  setUserInfo = (data) => {
-    return fetch(`${this._url}users/me`, {
+  // setUserInfo = (data) => {
+  //   return fetch(`${this._url}users/me`, {
+  //     method: "POST",
+  //     headers: configApi.headers,
+  //     body: JSON.stringify(data),
+  //   }).then(this._onError);
+  // };
+
+  getCards = (token) => {
+    return fetch(`${this._url}cards`, {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      }
+      //headers: configApi.headers,
+      //headers: this._headers,
+      //body: JSON.stringify(user),
+    }).then(this._onError);
+  };
+
+  addCard = (data, token) => {
+    return fetch(`${this._url}cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      //headers: configApi.headers,
       body: JSON.stringify(data),
     }).then(this._onError);
   };
 
-  getCards = () => {
-    return fetch(`${this._url}cards`, {
-      method: "GET",
-      headers: this._headers,
-    }).then(this._onError);
-  };
-
-  addCard = (data) => {
-    return fetch(`${this._url}cards`, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(data),
-    }).then(this._onError);
-  };
-
-  removeCard = (dataId) => {
+  removeCard = (dataId, token) => {
     return fetch(`${this._url}cards/${dataId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      }
+      //headers: configApi.headers,
     }).then(this._onError);
   };
 
-  setUserInfo = (userData) => {
+  setUserInfo = (userData, token) => {
     return fetch(`${this._url}users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      //headers: configApi.headers,
       body: JSON.stringify(userData),
     }).then(this._onError);
   };
 
-  setAvatar = (avatar) => {
+  setAvatar = (avatar, token) => {
     return fetch(`${this._url}users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      //headers: configApi.headers,
       body: JSON.stringify(avatar),
     }).then(this._onError);
   };
 
-  toggleLike = (method, dataId) => {
-    return fetch(`${this._url}cards/likes/${dataId}`, {
+  toggleLike = (method, dataId, token) => {
+    return fetch(`${this._url}cards/${dataId}/likes`, {
       method: method,
-      headers: this._headers,
+      headers: {
+        authorization:`Bearer ${token}`,
+        "content-type": "application/json",
+      }
+      //headers: configApi.headers,
     }).then(this._onError);
   };
 }

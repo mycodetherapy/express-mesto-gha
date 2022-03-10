@@ -1,16 +1,18 @@
-export const BASE_URL = "https://auth.nomoreparties.co";
+export const BASE_URL = "http://localhost:3000";//"https://auth.nomoreparties.co";
 
 export const register = (password, email) => {
+  console.log(password, email);
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ password: password, email: email }),
   })
-    .then((response) => {
+    .then((response) => { 
       try {
-        if (response.status === 201) {
+        if (response.status === 200) {
           return response.json();
         }
       } catch (e) {
@@ -18,6 +20,7 @@ export const register = (password, email) => {
       }
     })
     .then((res) => {
+      console.log(res);
       return res;
     })
     .catch((err) => console.log(err));
@@ -26,6 +29,7 @@ export const register = (password, email) => {
 export const authorization = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
@@ -44,9 +48,11 @@ export const authorization = (password, email) => {
 export const getContent = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
+        //'Authorization': token
       }
     })
     .then(res => res.json())

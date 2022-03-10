@@ -16,6 +16,7 @@ import Register from "./Register";
 import Login from "./Login";
 import * as Auth from "../utils/Auth";
 import ProtectedRoute from "./ProtectedRoute";
+// import { configApi } from "../utils/constants"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -39,8 +40,18 @@ function App() {
   const history = useHistory();
   const [viewEmail, setViewEmail] = React.useState("");
 
+  // React.useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   token &&
+  //     Auth.getContent(token).then((registerData) => {
+  //       tokenCheck(registerData);
+  //     });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+  const token = localStorage.getItem("token");
+
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
+    //const token = localStorage.getItem("token");
     token &&
       Auth.getContent(token).then((registerData) => {
         tokenCheck(registerData);
@@ -50,20 +61,25 @@ function App() {
 
   React.useEffect(() => {
     if (isLoggedIn) {
-      Promise.all([api.getUserInfo(), api.getCards()])
+      Promise.all([api.getUserInfo(token), api.getCards(token)])
         .then(([userData, cardsData]) => {
-          setCurrentUser(userData);
+          setCurrentUser(userData.data);
           setCards(cardsData);
         })
         .catch((err) => {
           console.log(err);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   const handleLoggin = () => {
     setIsLoggedIn(true);
   };
+
+  const handleLogOut = () => {
+    setIsLoggedIn(false);
+  }
 
   const HandleRegisterEmail = (email) => {
     setViewEmail(email);
@@ -78,12 +94,12 @@ function App() {
   }
 
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     const methodFetchLike = isLiked ? "DELETE" : "PUT";
     api
-      .toggleLike(methodFetchLike, card._id, !isLiked)
+      .toggleLike(methodFetchLike, card._id, token, !isLiked)
       .then((newCard) => {
-        setCards((state) =>
+        setCards((state) => 
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
@@ -94,7 +110,7 @@ function App() {
 
   const handleCardDelete = () => {
     api
-      .removeCard(currentCard._id)
+      .removeCard(currentCard._id, token)
       .then(() => {
         setCards((state) =>
           state.filter((c) => c._id !== currentCard._id && c)
@@ -107,7 +123,7 @@ function App() {
   };
 
   const handleUpdateUserInfo = (inputUserData, methodApi) => {
-    api[methodApi](inputUserData)
+    api[methodApi](inputUserData, token)
       .then((outputUserData) => {
         setCurrentUser(outputUserData);
         closeAllPopups();
@@ -119,7 +135,7 @@ function App() {
 
   const handleSubmitAddPlace = (inputCard) => {
     api
-      .addCard(inputCard)
+      .addCard(inputCard, token)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
@@ -172,17 +188,17 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="common">
         <div className="page">
-          <Header email={viewEmail} />
+          <Header email={viewEmail} onLogOut={handleLogOut} />
 
           <Switch>
-            <Route path="/sign-up">
+            <Route path="/signup">
               <Register
                 onRegister={handleRegisterAction}
                 onStatus={handleTooltipStatus}
               />
             </Route>
 
-            <Route path="/sign-in">
+            <Route path="/signin">
               <Login
                 onLoggin={handleLoggin}
                 registerEmail={HandleRegisterEmail}
@@ -206,7 +222,7 @@ function App() {
               {!isLoggedIn ? (
                 <Redirect to="/"></Redirect>
               ) : (
-                <Redirect to="/sign-in"></Redirect>
+                <Redirect to="/signin"></Redirect>
               )}
             </Route>
           </Switch>

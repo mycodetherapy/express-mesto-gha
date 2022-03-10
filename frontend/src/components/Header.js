@@ -3,12 +3,13 @@ import close from "../images/close-icon-s.svg"
 import React from 'react';
 import { Link, Route, useHistory } from 'react-router-dom';
 
-function Header({email}) {
+function Header({email, onLogOut}) {
   const history = useHistory();
 
   function signOut() {
     localStorage.removeItem("token");
-    history.push("/sign-in");
+    onLogOut();
+    history.push("/signin");
   }
 
   return (
@@ -36,17 +37,17 @@ function Header({email}) {
         </div>
       </Route>
      
-      <Route path={"/sign-up"}>
+      <Route path={"/signup"}>
         <div className="header__info header__info_active">
-          <Link to="sign-in" className="header__info-link">
+          <Link to="signin" className="header__info-link">
             Войти
           </Link>
         </div>
       </Route>
 
-      <Route path={"/sign-in"}>
+      <Route path={"/signin"}>
         <div className="header__info header__info_active">
-          <Link to="sign-up" className="header__info-link">
+          <Link to="signup" className="header__info-link">
             Регистрация
           </Link>
         </div>

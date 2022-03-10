@@ -24,9 +24,11 @@ function Register({ onRegister, onStatus }) {
     Auth.register(password, email)
       .then((res) => {
         if (res) {
+          console.log(res);
           onStatus();
-          history.push("/sign-in");
+          history.push("/signin");
         } else {
+          console.log(res);
           console.log("Что-то пошло не так!");
         }
       })
@@ -42,7 +44,7 @@ function Register({ onRegister, onStatus }) {
       title="Регистрация"
       buttonText="Зарегистрироваться"
       bottomLinkText="Уже зарегистрированы? Войти"
-      linkPuth="/sign-in"
+      linkPuth="/signin"
       onEmail={handleEmailChange}
       onPassword={handlePasswordChange}
       onSubmit={handleSubmit}

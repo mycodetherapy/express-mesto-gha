@@ -21,6 +21,7 @@ function Login({onLoggin, registerEmail}) {
     const {email, password} = registerData;
     Auth.authorization(password, email).then((data) => {
       if (data) {
+        //localStorage.setItem("user", data);
         onLoggin();
         registerEmail(email);
         history.push("/");

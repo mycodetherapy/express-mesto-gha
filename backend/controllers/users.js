@@ -36,11 +36,13 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
         expiresIn: '7d',
       });
+      //const id = user._id;
       res.send({ token });
     }).catch(next);
 };
 
 module.exports.getUserInfo = (req, res, next) => {
+  //console.log(req);
   User.findById(req.user._id)
     .then((users) => {
       if (!users) {
@@ -82,7 +84,7 @@ module.exports.updateUser = (req, res, next) => {
     },
   )
     .orFail(new NotFoundError('Пользователь не найден.'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
@@ -98,7 +100,7 @@ module.exports.updateAvatar = (req, res, next) => {
     runValidators: true,
   })
     .orFail(new NotFoundError('Пользователь не найден.'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));

@@ -2,13 +2,17 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import React from "react";
 
 function Card({name, link, likes, card, onCardClick, onCardLike, onCardDelete}) {
+  //console.log(typeof card);
   const userData = React.useContext(CurrentUserContext);
-  const isOwn = card.owner._id === userData._id;
+  const isOwn = card.owner === userData._id;
   const elementDeleteClassName = `element__delete ${
     isOwn ? "element__delete_visible" : "element__delete_hidden"
   }`;
 
-  const isLiked = card.likes.some((i) => i._id === userData._id);
+  //console.log(typeof userData._id);
+  //console.log(likes);
+  
+  const isLiked = card.likes.some((item) =>  item === userData._id );
 
   const elementLikeClassName = `element__like ${
     isLiked && "element__like_active"
@@ -47,7 +51,7 @@ function Card({name, link, likes, card, onCardClick, onCardLike, onCardDelete}) 
           type="submit"
           onClick={handleLikeClick}
         ></button>
-        <div className="element__like-counter">{likes.length}</div>
+       <div className="element__like-counter">{likes.length}</div>
       </div>
     </li>
   );
