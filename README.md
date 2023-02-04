@@ -1,33 +1,13 @@
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
+# Project Mesto frontend + backend
 
+This is a refactoring of the "Mesto" project carried out in accordance with the plans conceived earlier. Interface rewritten using React. Added registration and authorization functionality. Express and MongoDB are used on the backend.
 
+### If you want to work with the project locally:
 
-## Настройка бейджей статуса тестов
-Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `${имя_пользователя}` и `${имя_репозитория}` соответствующие значения.
-
-```
-[![Tests for sprint 13](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml) 
-
-[![Tests for sprint 14](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml)
-```
-
-
-## Директории
-
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
-
-## Локальный запуск проекта
-
-Перейдите в паппку backend.
-
-Запустите сервер `npm run dev` Запускается на 3000 порту.
-
-Перейдите в папку frontend.
-
-Запустите фронтенд `npm start` Запуск провести на отличном от 3000 порту.
+1. Clone the repository from the main branch to your device. To do this, ente `git clone <repository address>` in the terminal.
+2. Install dependencies - go to the repository folder in the terminal and type `npm install`
+3. Change to the backend directory.
+4. Run the server `npm run dev` Runs on port 3000.
+5. Change to the frontend directory.
+6. Run the frontend `npm start` Run on a port other than 3000.
+7. Register by entering your email and password. You can use a disposable email.
